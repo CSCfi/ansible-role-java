@@ -78,9 +78,11 @@
 
 - name: install dependencies (apt, yum, dnf, zypper)
   become: yes
-  package:
-    name: '{{ java_dependencies }}'
-    state: present
+  shell: 'yum -y install {{ item }} warn=false'
+  with_items: '{{ java_dependencies }}'
+#    - tar
+#    - gzip
+#    - unzip
   when: ansible_pkg_mgr in ('apt', 'yum', 'dnf', 'zypper')
 
 # Workaround for: https://github.com/AdoptOpenJDK/openjdk-build/issues/660
